@@ -2,26 +2,6 @@ import pytest
 from tests.build_image_base_test import BuildImageBase, AL2023BasedBuildImageBase
 
 
-@pytest.mark.java8x86_64
-class TestBIJava8(BuildImageBase):
-    __test__ = True
-
-    @classmethod
-    def setUpClass(cls):
-        super().setUpClass("java8", "Dockerfile-java8", "maven")
-
-    def test_packages(self):
-        """
-        Test packages specific to this build image
-        """
-        self.assertTrue(
-            self.check_package_output("java -version", 'openjdk version "1.8', True)
-        )
-        self.assertTrue(self.is_package_present("mvn"))
-        self.assertTrue(self.is_package_present("gradle"))
-        self.assertTrue(self.is_architecture("x86_64"))
-
-
 @pytest.mark.java8_al2x86_64
 class TestBIJava8AL2(BuildImageBase):
     __test__ = True
@@ -664,37 +644,40 @@ class TestBIRuby32ForArm(BuildImageBase):
         self.assertTrue(self.is_package_present("gem"))
         self.assertTrue(self.is_architecture("aarch64"))
 
-@pytest.mark.go1xx86_64
-class TestBIGo1(BuildImageBase):
+
+@pytest.mark.ruby33x86_64
+class TestBIRuby33(AL2023BasedBuildImageBase):
     __test__ = True
 
     @classmethod
     def setUpClass(cls):
-        super().setUpClass("go1.x", "Dockerfile-go1x", "mod")
+        super().setUpClass("ruby3.3", "Dockerfile-ruby33", "bundler", tag="x86_64")
 
     def test_packages(self):
         """
         Test packages specific to this build image
         """
-        self.assertTrue(self.check_package_output("go version", "go1."))
-        self.assertTrue(self.is_package_present("go"))
+        self.assertTrue(self.check_package_output("ruby --version", "ruby 3.3."))
+        self.assertTrue(self.is_package_present("bundler"))
+        self.assertTrue(self.is_package_present("gem"))
+        self.assertTrue(self.is_architecture("x86_64"))
 
-
-@pytest.mark.providedx86_64
-class TestBIProvided(BuildImageBase):
+@pytest.mark.ruby33arm64
+class TestBIRuby33ForArm(AL2023BasedBuildImageBase):
     __test__ = True
 
     @classmethod
     def setUpClass(cls):
-        super().setUpClass("provided", "Dockerfile-provided")
+        super().setUpClass("ruby3.3", "Dockerfile-ruby33", "bundler", tag="arm64")
 
     def test_packages(self):
         """
         Test packages specific to this build image
         """
-        self.assertTrue(self.check_package_output("go version", "go1."))
-        self.assertTrue(self.is_package_present("go"))
-
+        self.assertTrue(self.check_package_output("ruby --version", "ruby 3.3."))
+        self.assertTrue(self.is_package_present("bundler"))
+        self.assertTrue(self.is_package_present("gem"))
+        self.assertTrue(self.is_architecture("aarch64"))
 
 @pytest.mark.provided_al2x86_64
 class TestBIProvidedAL2(BuildImageBase):
