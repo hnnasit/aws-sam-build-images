@@ -1,12 +1,8 @@
-#docker minor version updates can include breaking changes. Auto update micro version only.
-# TODO: lucashuy
-# revisit the docker pin when docker fixes the below request issue
-docker~=4.2.0
+# docker minor version updates can include breaking changes. Auto update micro version only.
+docker~=7.1.0
 pylint~=2.6.0
 urllib3<2
-# TODO: lucashuy
-# pin requests until https://github.com/docker/docker-py/issues/3256 is fixed
-requests<2.32
+requests~=2.32.0
 
 # Test requirements
 pytest==7.3.1
